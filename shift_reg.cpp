@@ -59,21 +59,3 @@ void writeOut(int rows, int cols)
 	digitalWrite(LATCHCOL, 0);
 	digitalWrite(LATCHCOL, 1);
 }
-
-/*void display(int *pattern, int size, int count, bool loop=false){
-	if(loop)
-	{
-		while(count>0){
-			for (int i=0; i <size ; i+=2){
-				writeOut(pattern[i], pattern[i+1]);
-				delay(10);
-			}
-			count--;
-		}	
-		return;
-	}
-	for (int i=0; i <size ; i+=2){
-				writeOut(pattern[i], pattern[i+1]);
-				delay(1000);
-			}
-}*/

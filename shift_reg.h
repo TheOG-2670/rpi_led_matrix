@@ -14,4 +14,3 @@
 
 void init();
 void writeOut(int rows, int cols);
-//void display(int *pattern, int size, int count, bool loop);
