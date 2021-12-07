@@ -32,7 +32,7 @@ row 1, col 1 (MSBFIRST)
  -----
 
 */
-#include "shift_reg.h"
+#include "shift_reg.h" //wiringPi, wiringShift, iostream, fstream, math
 
 void init()
 {
@@ -58,4 +58,25 @@ void writeOut(int rows, int cols)
 	digitalWrite(LATCHROW, 1);
 	digitalWrite(LATCHCOL, 0);
 	digitalWrite(LATCHCOL, 1);
+}
+
+void displayPattern(const std::vector<std::vector<int>>& v, const int delayTime, const int patternTime)
+{
+	int count = 0;
+	while (count++ < patternTime)
+	{
+
+		writeOut(v[0][0], v[0][1]);
+		delay(delayTime);
+		writeOut(0, 0); //prevent ghosting effect on adjacent LEDs
+
+		writeOut(v[1][0], v[1][1]);
+		delay(delayTime);
+		writeOut(0, 0);
+
+		writeOut(v[2][0], v[2][1]);
+		delay(delayTime);
+		writeOut(0, 0);
+	}
+
 }

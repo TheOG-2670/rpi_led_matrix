@@ -1,4 +1,5 @@
 #include <iostream>
+#include <vector>
 #include <wiringPi.h>
 #include <wiringShift.h>
 
@@ -14,3 +15,4 @@
 
 void init();
 void writeOut(int rows, int cols);
+void displayPattern(const std::vector<std::vector<int>>& v, const int delayTime, const int patternTime);
