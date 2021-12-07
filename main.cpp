@@ -24,7 +24,7 @@ const vector<vector<int>> binToHex(const vector<vector<int>> &p, const int size)
 	for (int i = 0; i < size; i++) {
 		int acc = 0;
 		for (int j = 0; j < size; j++) {
-			if (p[i].at(j) == 1) {
+			if (p[i][j] == 1) {
 				acc += pow(2, j);
 			}
 		}
@@ -41,11 +41,16 @@ void displayPattern(const vector<vector<int>>& v, const int delayTime, const int
 	int count = 0;
 	while (count++ < patternTime)
 	{
+
 		writeOut(v[0][0], v[0][1]);
 		delay(delayTime);
 		writeOut(0, 0); //prevent ghosting effect on adjacent LEDs
-
+		
 		writeOut(v[1][0], v[1][1]);
+		delay(delayTime);
+		writeOut(0, 0);
+
+		writeOut(v[2][0], v[2][1]);
 		delay(delayTime);
 		writeOut(0, 0);
 	}
@@ -91,13 +96,13 @@ int main(int argc, char** argv)
 	init();
 
 	if (argc < 2) {
-		const int size = 2, ledDelay = 10, patternTime = 50;
+		const int ledDelay = 10, patternTime = 50;
 		const char* path = "/home/pi/led\ projects/led\ matrix/c++/shift_reg/patterns.txt";
 		const threeDimVec p=readPatternFromFile(path);
 		threeDimVec::const_iterator const_it;
 		
 		for(const_it=p.begin(); const_it != p.end(); const_it++)
-			displayPattern(binToHex(*const_it, size), ledDelay, patternTime);
+			displayPattern(binToHex(*const_it, (*const_it).size()), ledDelay, patternTime);
 
 	}
 	else {
