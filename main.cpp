@@ -1,26 +1,23 @@
 #define _CRT_SECURE_NO_WARNINGS
-#include "shift_reg.h" //wiringPi, wiringShift, iostream
 #include <fstream> //ifstream
 #include <vector>
-#include <string>
-#include <stdlib.h>
 #include <math.h> //pow()
-using namespace std;
+#include "shift_reg.h" //wiringPi, wiringShift, iostream
 
-const void printHexPattern(const vector<vector<int>>& v)
+const void printHexPattern(const std::vector<std::vector<int>>& v)
 {
 	int count = 0;
 	for (int i = 0; i < v.size(); i++) {
 		while (count != v.size())
-			cout << v[count++][1] << " ";
-		cout << endl;
+			std::cout << v[count++][1] << " ";
+		std::cout << std::endl;
 	}
 }
 
-const vector<vector<int>> binToHex(const vector<vector<int>> &p, const int size)
+const std::vector<std::vector<int>> binToHex(const std::vector<std::vector<int>> &p, const int size)
 {
 
-	vector<vector<int>> v(size);
+	std::vector<std::vector<int>> v(size);
 	for (int i = 0; i < size; i++) {
 		int acc = 0;
 		for (int j = 0; j < size; j++) {
@@ -36,7 +33,7 @@ const vector<vector<int>> binToHex(const vector<vector<int>> &p, const int size)
 	return v;
 }
 
-void displayPattern(const vector<vector<int>>& v, const int delayTime, const int patternTime)
+void displayPattern(const std::vector<std::vector<int>>& v, const int delayTime, const int patternTime)
 {
 	int count = 0;
 	while (count++ < patternTime)
@@ -57,12 +54,12 @@ void displayPattern(const vector<vector<int>>& v, const int delayTime, const int
 
 }
 
-typedef vector<vector<vector<int>>> threeDimVec;
+typedef std::vector<std::vector<std::vector<int>>> threeDimVec;
 const threeDimVec readPatternFromFile(const char *file) {
-	vector<int> col;
-	vector<vector<int>> row;
+	std::vector<int> col;
+	std::vector<std::vector<int>> row;
 	threeDimVec pattern;
-	ifstream in(file);
+	std::ifstream in(file);
 
 	int rows=0, cols=0, tmp;
 	while (in.good())
@@ -97,12 +94,15 @@ int main(int argc, char** argv)
 
 	if (argc < 2) {
 		const int ledDelay = 10, patternTime = 50;
-		const char* path = "/home/pi/led\ projects/led\ matrix/c++/shift_reg/patterns.txt";
+		const char *path = "/home/pi/led\ projects/led\ matrix/c++/shift_reg/patterns.txt";
 		const threeDimVec p=readPatternFromFile(path);
 		threeDimVec::const_iterator const_it;
-		
-		for(const_it=p.begin(); const_it != p.end(); const_it++)
-			displayPattern(binToHex(*const_it, (*const_it).size()), ledDelay, patternTime);
+		std::vector<std::vector<int>> hexPattern;
+
+		for (const_it = p.begin(); const_it != p.end(); const_it++) {
+			hexPattern = binToHex(*const_it, (*const_it).size());
+			displayPattern(hexPattern, ledDelay, patternTime);
+		}
 
 	}
 	else {
