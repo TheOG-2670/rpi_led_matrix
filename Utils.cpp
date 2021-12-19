@@ -1,19 +1,12 @@
-#include "shift_reg.h"
+#include <iostream>
+#include <math.h>
+#include <wiringPi.h>
+#include <wiringShift.h>
 #include "Utils.h"
+#include "MatrixPattern.h" //wiringPi, wiringShift, vector
 
-const void printHexPattern(const std::vector<std::vector<int>>& v)
+const std::vector<std::vector<int>> Utils::binToHex(const std::vector<std::vector<int>>& p, const int size)
 {
-	int count = 0;
-	for (int i = 0; i < v.size(); i++) {
-		while (count != v.size())
-			std::cout << v[count++][1] << " ";
-		std::cout << std::endl;
-	}
-}
-
-const std::vector<std::vector<int>> binToHex(const std::vector<std::vector<int>>& p, const int size)
-{
-
 	std::vector<std::vector<int>> v(size);
 	for (int i = 0; i < size; i++) {
 		int acc = 0;
@@ -25,12 +18,10 @@ const std::vector<std::vector<int>> binToHex(const std::vector<std::vector<int>>
 		v[i].push_back(pow(2, i));
 		v[i].push_back(acc);
 	}
-
-	printHexPattern(v);
 	return v;
 }
 
-const threeDimVec readPatternFromFile(const char* file) {
+const threeDimVec Utils::readPatternFromFile(const char* file) {
 	std::vector<int> col;
 	std::vector<std::vector<int>> row;
 	threeDimVec pattern;
@@ -60,4 +51,30 @@ const threeDimVec readPatternFromFile(const char* file) {
 
 	in.close();
 	return pattern;
+}
+
+void init()
+{
+	pinMode(MRESET, OUTPUT);
+	digitalWrite(MRESET, 0);
+	digitalWrite(MRESET, 1);
+
+	int pins[] = { DATAROW, LATCHROW, CLOCKROW, DATACOL, LATCHCOL, CLOCKCOL };
+	for (int pin : pins)
+	{
+		pinMode(pin, OUTPUT);
+		digitalWrite(pin, 0);
+
+	}
+	std::cout << "all pins successfully initialized!\n";
+}
+
+void Utils::writeOut(int rows, int cols)
+{
+	shiftOut(DATAROW, CLOCKROW, MSBFIRST, rows);
+	shiftOut(DATACOL, CLOCKCOL, MSBFIRST, ~cols);
+	digitalWrite(LATCHROW, 0);
+	digitalWrite(LATCHROW, 1);
+	digitalWrite(LATCHCOL, 0);
+	digitalWrite(LATCHCOL, 1);
 }
