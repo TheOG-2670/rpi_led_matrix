@@ -123,7 +123,5 @@ namespace WebAPI1.Controllers
                 throw e;
             }
         }
-
-        public static bool PatternExist() => File.Exists(Path);
     }
 }
