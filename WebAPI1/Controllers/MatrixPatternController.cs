@@ -18,28 +18,25 @@ namespace WebAPI1.Controllers
         [HttpPost]
         public ActionResult CreatePatterns(List<MatrixPattern> patterns)
         {
-            HttpResponseMessage response = new HttpResponseMessage();
-            response.Content.Headers.ContentType = new System.Net.Http.Headers.MediaTypeHeaderValue("application/json");
-            if (ValidateResponseBody(incomingPattern))
+            try
             {
-                Util.SavePattern(incomingPattern);
-                if (Util.PatternExist())
-                {
-                    response.StatusCode = System.Net.HttpStatusCode.OK;
-                    response.ReasonPhrase = "Pattern successfully saved!";
-                }
-                else
-                {
-                    response.StatusCode=System.Net.HttpStatusCode.BadRequest;
-                    response.ReasonPhrase = "Error saving pattern!";
-                }
+                ParsePatterns(patterns);
+                return CreatedAtAction(nameof(GetAllPatterns), "Pattern(s) saved!");
             }
-            else
+            catch (InvalidDataException e)
             {
-                response.StatusCode = System.Net.HttpStatusCode.BadRequest;
-                response.ReasonPhrase = "pattern must not be empty";
+                string env = Environment.GetEnvironmentVariable("ASPNETCORE_ENVIRONMENT");
+                if (env != null && env.Equals("Development"))
+                {
+                    Console.Error.WriteLine(e.Message);
+                }
+                return BadRequest("Pattern(s) must not be empty!");
             }
-            return response;
+            catch (IOException)
+            {
+                return Problem("Error parsing patterns!", null, StatusCodes.Status500InternalServerError);
+            }
+
         }
 
         public static bool ValidateResponseBody(MatrixPattern mp)
