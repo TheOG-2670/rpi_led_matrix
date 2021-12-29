@@ -7,6 +7,14 @@ namespace WebAPI1.Controllers
     [Route("api/[controller]")]
     public class MatrixPatternController : ControllerBase
     {
+
+        [HttpGet]
+        public ActionResult GetAllPatterns()
+        {
+            var patterns = Util.LoadPatterns();
+            return patterns.Count > 0 ? Ok(patterns) : NotFound();
+        }
+
         [HttpPost]
         public ActionResult CreatePatterns(List<MatrixPattern> patterns)
         {
