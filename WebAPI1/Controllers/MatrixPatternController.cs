@@ -66,6 +66,41 @@ namespace WebAPI1.Controllers
     class Util
     {
         private static readonly string Path = "./pattern.txt";
+        
+        public static List<MatrixPattern> LoadPatterns()
+        {
+            IEnumerable<string> p = File.ReadLines(Path, Encoding.UTF8);
+            List<MatrixPattern> patterns = new List<MatrixPattern>();
+            MatrixPattern mp = new MatrixPattern();
+            int rowcount = 0;
+
+            foreach (string pattern in p)
+            {
+                if (pattern.Contains(','))
+                {
+                    rowcount = 0;
+                    mp.NumRows = (int)char.GetNumericValue(pattern.ElementAt(0));
+                    mp.NumColumns = (int)char.GetNumericValue(pattern.ElementAt(2));
+                }
+                else
+                {
+                    rowcount++;
+                    if (rowcount==mp.NumRows)
+                    { 
+                        patterns.Add(mp);
+                        mp = new MatrixPattern();
+                    }
+                    else
+                    {
+                        mp.Pattern.Add( pattern.Replace(@" ", @"")
+                                        .ToCharArray().ToList()
+                                        .ConvertAll(i => (int)char.GetNumericValue(i)) );
+                    }
+                }
+            }
+            return patterns;
+        }
+
         public static void SavePattern(MatrixPattern mp)
         {
             string patternDimensions = mp.NumRows + "," + mp.NumColumns;
