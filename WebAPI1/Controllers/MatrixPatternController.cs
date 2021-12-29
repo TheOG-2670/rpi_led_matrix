@@ -4,7 +4,7 @@ using System.Text;
 namespace WebAPI1.Controllers
 {
     [ApiController]
-    [Route("[controller]")]
+    [Route("api/[controller]")]
     public class MatrixPatternController : ControllerBase
     {
         [HttpPost]
