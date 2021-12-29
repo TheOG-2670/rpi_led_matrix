@@ -39,7 +39,7 @@ namespace WebAPI1.Controllers
 
         }
 
-        public static bool ValidateResponseBody(MatrixPattern mp)
+        protected bool ValidatePattern(MatrixPattern mp)
         {
             return mp.NumRows > 0 && mp.NumColumns > 0;
         }
