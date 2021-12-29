@@ -43,6 +43,24 @@ namespace WebAPI1.Controllers
         {
             return mp.NumRows > 0 && mp.NumColumns > 0;
         }
+        protected void ParsePatterns(List<MatrixPattern> patternList)
+        {
+            patternList.ForEach(pattern =>
+            {
+                try
+                {
+                    if (!ValidatePattern(pattern))
+                    {
+                        throw new InvalidDataException();
+                    }
+                    Util.SavePattern(pattern);
+                }
+                catch (IOException e)
+                {
+                    throw e;
+                }
+            });
+        }
     }
 
     class Util
