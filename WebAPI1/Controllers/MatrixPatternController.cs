@@ -114,10 +114,14 @@ namespace WebAPI1.Controllers
                 buffer.AppendLine();
             });
 
-            
-            FileStream fs = new FileStream(Path, FileMode.Create);
-            fs.Write(new UTF8Encoding(true).GetBytes(buffer.ToString()), 0, buffer.Length);
-            fs.Close();
+            try
+            {
+                File.AppendAllText(Path, buffer.AppendLine().ToString(), Encoding.UTF8);
+            }
+            catch (IOException e)
+            {
+                throw e;
+            }
         }
 
         public static bool PatternExist() => File.Exists(Path);
