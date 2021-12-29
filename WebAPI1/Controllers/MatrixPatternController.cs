@@ -8,7 +8,7 @@ namespace WebAPI1.Controllers
     public class MatrixPatternController : ControllerBase
     {
         [HttpPost]
-        public HttpResponseMessage Post(MatrixPattern incomingPattern)
+        public ActionResult CreatePatterns(List<MatrixPattern> patterns)
         {
             HttpResponseMessage response = new HttpResponseMessage();
             response.Content.Headers.ContentType = new System.Net.Http.Headers.MediaTypeHeaderValue("application/json");
