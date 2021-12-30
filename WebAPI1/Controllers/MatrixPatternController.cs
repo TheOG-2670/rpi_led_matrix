@@ -12,7 +12,8 @@ namespace WebAPI1.Controllers
         public ActionResult GetAllPatterns()
         {
             var patterns = Util.LoadPatterns();
-            return patterns.Count > 0 ? Ok(patterns) : NotFound();
+            if(patterns.Count == 0) return NotFound();
+            return Ok(patterns);
         }
 
         [HttpPost]
@@ -84,17 +85,16 @@ namespace WebAPI1.Controllers
                 }
                 else
                 {
-                    rowcount++;
-                    if (rowcount==mp.NumRows)
+                    if (rowcount++ != mp.NumRows)
                     { 
-                        patterns.Add(mp);
-                        mp = new MatrixPattern();
+			mp.Pattern.Add( pattern.Replace(@" ", @"")
+                                        .ToCharArray().ToList()
+                                        .ConvertAll(i => (int)char.GetNumericValue(i)) );
                     }
                     else
                     {
-                        mp.Pattern.Add( pattern.Replace(@" ", @"")
-                                        .ToCharArray().ToList()
-                                        .ConvertAll(i => (int)char.GetNumericValue(i)) );
+                        patterns.Add(mp);
+                        mp = new MatrixPattern();
                     }
                 }
             }
