@@ -1,7 +1,13 @@
-using Microsoft.AspNetCore.Mvc;
+﻿using System;
+using System.Collections.Generic;
+using System.IO;
+using System.Linq;
 using System.Text;
+using System.Diagnostics;
+using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Mvc;
 
-namespace WebAPI1.Controllers
+namespace w_api.Controllers
 {
     [ApiController]
     [Route("api/[controller]")]
@@ -11,9 +17,10 @@ namespace WebAPI1.Controllers
         [HttpGet]
         public ActionResult GetAllPatterns()
         {
+		Util.ExecPatternScript();
             var patterns = Util.LoadPatterns();
             if(patterns.Count == 0) return NotFound();
-            return Ok(patterns);
+            return Ok(patterns); 
         }
 
         [HttpPost]
@@ -66,8 +73,8 @@ namespace WebAPI1.Controllers
 
     class Util
     {
-        private static readonly string Path = "./pattern.txt";
-        
+        private static readonly string Path = "../shift_reg/pattern.txt";
+
         public static List<MatrixPattern> LoadPatterns()
         {
             IEnumerable<string> p = File.ReadLines(Path, Encoding.UTF8);
@@ -77,6 +84,11 @@ namespace WebAPI1.Controllers
 
             foreach (string pattern in p)
             {
+
+		if (pattern.Contains('\r'))
+                {
+                    pattern.Replace("\r", "");
+                }
                 if (pattern.Contains(','))
                 {
                     rowcount = 0;
@@ -86,10 +98,10 @@ namespace WebAPI1.Controllers
                 else
                 {
                     if (rowcount++ != mp.NumRows)
-                    { 
-			mp.Pattern.Add( pattern.Replace(@" ", @"")
+                    {
+			mp.Pattern.Add(pattern.Replace(@" ", @"")
                                         .ToCharArray().ToList()
-                                        .ConvertAll(i => (int)char.GetNumericValue(i)) );
+                                        .ConvertAll(i => (int)char.GetNumericValue(i)));
                     }
                     else
                     {
@@ -123,5 +135,26 @@ namespace WebAPI1.Controllers
                 throw e;
             }
         }
+
+
+     public static void ExecPatternScript()
+     {
+          ProcessStartInfo processStartInfo = new ProcessStartInfo();
+            processStartInfo.FileName = "/usr/bin/bash";
+            processStartInfo.Arguments = "-c  \"make -C ../shift_reg\"";
+            processStartInfo.UseShellExecute = false; //don't run in command prompt
+            processStartInfo.RedirectStandardOutput = true; //redirect from cmd to stdout
+            processStartInfo.RedirectStandardError = true; //redirect from cmd to stderr
+            processStartInfo.CreateNoWindow = true; //don't create new window for process
+
+            Process p = new Process { StartInfo = processStartInfo };
+            p.Start();
+
+            string error = p.StandardError.ReadToEnd();
+            if (!string.IsNullOrEmpty(error)) Console.WriteLine(error);
+
+            p.WaitForExit();
+	    Console.WriteLine(p.StandardOutput.ReadToEnd());
+     }
     }
 }
