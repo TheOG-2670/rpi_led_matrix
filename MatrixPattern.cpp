@@ -10,7 +10,7 @@ MatrixPattern::MatrixPattern(int numRows, int numCols, const std::vector<std::ve
 		this->numCols = numCols;
 
 		for(int i=0; i < numRows; i++)
-			this->pattern.push(Utils::binToHex(v, numRows)[i]);
+			this->pattern.push(Utils::binToHex(v)[i]);
 	}
 }
 

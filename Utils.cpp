@@ -5,12 +5,12 @@
 #include "Utils.h"
 #include "MatrixPattern.h" //wiringPi, wiringShift, vector
 
-const std::vector<std::vector<int>> Utils::binToHex(const std::vector<std::vector<int>>& p, const int size)
+const std::vector<std::vector<int>> Utils::binToHex(const std::vector<std::vector<int>>& p)
 {
-	std::vector<std::vector<int>> v(size);
-	for (int i = 0; i < size; i++) {
+	std::vector<std::vector<int>> v(p.size());
+	for (int i = 0; i < p.size(); i++) {
 		int acc = 0;
-		for (int j = 0; j < size; j++) {
+		for (int j = 0; j < p[0].size(); j++) {
 			if (p[i][j] == 1) {
 				acc += pow(2, j);
 			}
@@ -38,11 +38,11 @@ const threeDimVec Utils::readPatternFromFile(const char* file) {
 		}
 		else {
 			col.push_back(tmp);
-			if (col.size() == cols) {
+			if (col.size() == (size_t)cols) {
 				row.push_back(col);
 				col.clear();
 			}
-			if (row.size() == rows) {
+			if (row.size() == (size_t)rows) {
 				pattern.push_back(row);
 				row.clear();
 			}

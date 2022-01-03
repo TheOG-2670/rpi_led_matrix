@@ -20,7 +20,7 @@ typedef std::vector<std::vector<std::vector<int>>> threeDimVec;
 
 class Utils {
 public:
-	static const std::vector<std::vector<int>> binToHex(const std::vector<std::vector<int>>& p, const int size);
+	static const std::vector<std::vector<int>> binToHex(const std::vector<std::vector<int>>& p);
 	static const threeDimVec readPatternFromFile(const char* file);
 	static void writeOut(int, int);
 };
