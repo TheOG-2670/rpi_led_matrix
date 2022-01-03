@@ -11,13 +11,13 @@ int main(int argc, char** argv)
 	init();
 
 	if (argc < 2) {
-		
-		const char *path = "/home/pi/led\ projects/led\ matrix/c++/shift_reg/patterns.txt";
+
+		const char *path = "/home/pi/led_matrix/shift_reg/pattern.txt";
 		threeDimVec v = Utils::readPatternFromFile(path); //file holds multiple patterns
-		
+
 		std::stack<MatrixPattern> patternStack;
 		for (auto& i : v) {
-			MatrixPattern mp(i[0].size(), i.size(), i); //rows, cols, pattern
+			MatrixPattern mp(i.size(), i[0].size(), i); //rows, cols, pattern
 			patternStack.push(mp);
 		}
 
