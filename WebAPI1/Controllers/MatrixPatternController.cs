@@ -7,7 +7,7 @@ using System.Diagnostics;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
-namespace w_api.Controllers
+namespace WebAPI1.Controllers
 {
     [ApiController]
     [Route("api/[controller]")]
@@ -73,7 +73,7 @@ namespace w_api.Controllers
 
     class Util
     {
-        private static readonly string Path = "../shift_reg/pattern.txt";
+        private static readonly string Path = "../../shift_reg/pattern.txt";
 
         public static List<MatrixPattern> LoadPatterns()
         {
@@ -141,7 +141,7 @@ namespace w_api.Controllers
      {
           ProcessStartInfo processStartInfo = new ProcessStartInfo();
             processStartInfo.FileName = "/usr/bin/bash";
-            processStartInfo.Arguments = "-c  \"make -C ../shift_reg\"";
+            processStartInfo.Arguments = "-c  \"make -C ../../shift_reg\"";
             processStartInfo.UseShellExecute = false; //don't run in command prompt
             processStartInfo.RedirectStandardOutput = true; //redirect from cmd to stdout
             processStartInfo.RedirectStandardError = true; //redirect from cmd to stderr
