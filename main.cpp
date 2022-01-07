@@ -11,21 +11,9 @@ int main(int argc, char** argv)
 	wiringPiSetup();
 	init();
 
-<<<<<<< Updated upstream
-	if (argc < 2) {
-
-		const char *path = "/home/pi/led_matrix/shift_reg/pattern.txt";
-		threeDimVec v = Utils::readPatternFromFile(path); //file holds multiple patterns
-<<<<<<< Updated upstream
-
-=======
-		
-=======
 	if (argc > 1 && argc < 2) {
 		threeDimVec v = Utils::readPatternFromFile(argv[1]); //file holds multiple patterns
 
->>>>>>> Stashed changes
->>>>>>> Stashed changes
 		std::stack<MatrixPattern> patternStack;
 		for (auto& i : v) {
 			MatrixPattern mp(i.size(), i[0].size(), i); //rows, cols, pattern
@@ -38,7 +26,7 @@ int main(int argc, char** argv)
 		}
 
 	}
-	else if(argc == 2){
+	else if(argc == 3){
 		Utils::writeOut(std::stoi(argv[1]), std::stoi(argv[2]));
 	}
 	else {
