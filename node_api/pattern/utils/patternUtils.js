@@ -1,49 +1,50 @@
 "use strict";
 exports.__esModule = true;
-exports.savePatterns = exports.loadPatterns = exports.bashExec = void 0;
+exports.savePatterns = exports.loadPatterns = exports.executeRPiPatternDisplay = void 0;
 var fs = require("fs");
 var path = require("path");
 var child_process_1 = require("child_process");
 var file = path.resolve('assets', 'patterns.txt');
-var bashExec = function () {
+var executeRPiPatternDisplay = function () {
     var dest = '~/led_matrix';
     (0, child_process_1.spawn)('cp', [file, dest]);
     (0, child_process_1.spawn)('make', ['-C', dest]).stdout.on('data', function (data) {
         process.stdout.write(data.toString());
     });
 };
-exports.bashExec = bashExec;
+exports.executeRPiPatternDisplay = executeRPiPatternDisplay;
 var constructPattern = function (patternObject) {
     //extract and parse pattern size
     var numRowNumColString = patternObject.split('\n')[0];
     var rows = parseInt(numRowNumColString.split(',')[0]);
     var columns = parseInt(numRowNumColString.split(',')[1]);
-    //extract the pattern and remove trailing newline (if any)
+    //extract the pattern and remove trailing newline (if pattern is last one in file)
     var arr = patternObject.substring(numRowNumColString.length + 1).split('\n');
-    var n = arr.indexOf("");
-    if (n > 0)
-        arr.splice(n, 1);
+    var trailingNewlineIndex = arr.indexOf("");
+    if (trailingNewlineIndex > 0) {
+        arr.splice(trailingNewlineIndex, 1);
+    }
     //parse and construct the pattern itself 
     var pattern = [];
-    arr.forEach(function (a) {
-        var b = a.split(',');
-        b = Array.from(b, function (i) { return parseInt(i); });
-        pattern.push(b);
+    arr.forEach(function (rowString) {
+        var currentRow = rowString.split(',');
+        currentRow = Array.from(currentRow, function (num) { return parseInt(num); });
+        pattern.push(currentRow);
     });
     //return as a ready object
-    var obj = {
+    var parsedPattern = {
         rows: rows,
         columns: columns,
         pattern: pattern
     };
-    console.log("\n\nreading done.\ncontents:\n".concat(JSON.stringify(obj)));
-    return obj;
+    console.log("\n\nreading done.\ncontents:\n".concat(JSON.stringify(parsedPattern)));
+    return parsedPattern;
 };
 var loadPatterns = function () {
     return new Promise(function (resolve, reject) {
-        var rs = fs.createReadStream(file, 'utf-8');
+        var readStream = fs.createReadStream(file, 'utf-8');
         var content = "";
-        rs.on('data', function (data) {
+        readStream.on('data', function (data) {
             content += data;
         })
             .once('end', function () {
@@ -66,19 +67,19 @@ var loadPatterns = function () {
 };
 exports.loadPatterns = loadPatterns;
 var savePatterns = function (patternObjectArray) {
-    var ws = fs.createWriteStream(file, 'utf-8');
-    patternObjectArray.forEach(function (p, i) {
-        var rows = p.rows, columns = p.columns, pattern = p.pattern;
+    var writeStream = fs.createWriteStream(file, 'utf-8');
+    patternObjectArray.forEach(function (patternObject, i) {
+        var rows = patternObject.rows, columns = patternObject.columns, pattern = patternObject.pattern;
         if (rows === 0 || columns === 0) {
             throw 'invalid pattern!';
         }
-        ws.write("".concat(rows, ",").concat(columns, "\n"));
+        writeStream.write("".concat(rows, ",").concat(columns, "\n"));
         pattern.forEach(function (row) {
-            ws.write("".concat(row, "\n"));
+            writeStream.write("".concat(row, "\n"));
         });
         if (i !== patternObjectArray.length - 1)
-            ws.write('\n');
+            writeStream.write('\n');
     });
-    ws.close();
+    writeStream.close();
 };
 exports.savePatterns = savePatterns;

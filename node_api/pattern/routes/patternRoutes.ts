@@ -7,7 +7,7 @@ const app = express()
 app.route('/patterns')
     .get((req: express.Request, res: express.Response<PatternsResponseModel>) => {
     utils.loadPatterns().then((content: PatternObjectModel[])=>{
-        utils.bashExec()
+        utils.executeRPiPatternDisplay()
         res.json({
             success: {
                 response: 'display script successfully executed!',

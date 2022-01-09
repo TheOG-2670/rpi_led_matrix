@@ -5,7 +5,7 @@ import {spawn} from 'child_process'
 const file=path.resolve('assets','patterns.txt')
 
 
-export const bashExec=(): void=>{
+export const executeRPiPatternDisplay=(): void=>{
     let dest='~/led_matrix'
     spawn('cp', [file, dest])
     spawn('make', ['-C', dest]).stdout.on('data', (data)=>{
@@ -19,34 +19,36 @@ const constructPattern=(patternObject: string): PatternObjectModel=>{
     let rows: string | number=parseInt(numRowNumColString.split(',')[0])
     let columns: string | number= parseInt(numRowNumColString.split(',')[1])
     
-    //extract the pattern and remove trailing newline (if any)
+    //extract the pattern and remove trailing newline (if pattern is last one in file)
     let arr: string[]=patternObject.substring(numRowNumColString.length+1,).split('\n')
-    let n: number =arr.indexOf("")
-    if(n>0) arr.splice(n,1)
+    let trailingNewlineIndex: number =arr.indexOf("")
+    if(trailingNewlineIndex>0) {
+	arr.splice(trailingNewlineIndex,1)
+    }
     
     //parse and construct the pattern itself 
     let pattern: number[][]=[]
-    arr.forEach((a)=>{
-        let b: string[] | number[] =a.split(',')
-        b=Array.from(b, i=>parseInt(i))
-        pattern.push(b)
+    arr.forEach((rowString)=>{
+        let currentRow: string[] | number[] =rowString.split(',')
+        currentRow=Array.from(currentRow, num=>parseInt(num))
+        pattern.push(currentRow)
     })
     
     //return as a ready object
-    let obj: PatternObjectModel={
+    let parsedPattern: PatternObjectModel={
         rows,
         columns,
         pattern
     }
-    console.log(`\n\nreading done.\ncontents:\n${JSON.stringify(obj)}`)
-    return obj
+    console.log(`\n\nreading done.\ncontents:\n${JSON.stringify(parsedPattern)}`)
+    return parsedPattern
 }
 
 export const loadPatterns=(): Promise<PatternObjectModel[]> =>{
     return new Promise((resolve, reject)=>{
-        let rs=fs.createReadStream(file, 'utf-8')
+        let readStream=fs.createReadStream(file, 'utf-8')
         let content: string=""
-        rs.on('data', (data: string)=>{
+        readStream.on('data', (data: string)=>{
             content+=data
         })
         .once('end', ()=>{
@@ -72,21 +74,21 @@ export const loadPatterns=(): Promise<PatternObjectModel[]> =>{
 }
 
 export const savePatterns=(patternObjectArray: PatternObjectModel[]): void=>{
-    let ws=fs.createWriteStream(file, 'utf-8')
+    let writeStream=fs.createWriteStream(file, 'utf-8')
     
 
-    patternObjectArray.forEach((p: PatternObjectModel,i: number)=>{
-        const{rows, columns, pattern}=p
+    patternObjectArray.forEach((patternObject: PatternObjectModel, i: number)=>{
+        const{rows, columns, pattern}=patternObject
         if(rows===0 || columns===0){
             throw 'invalid pattern!'
         }
-        ws.write(`${rows},${columns}\n`)
+        writeStream.write(`${rows},${columns}\n`)
         pattern.forEach((row: string[] | number[])=>{
-            ws.write(`${row}\n`)
+            writeStream.write(`${row}\n`)
         })
         if(i!==patternObjectArray.length-1)
-            ws.write('\n')
+            writeStream.write('\n')
     })
 
-    ws.close()
+    writeStream.close()
 }

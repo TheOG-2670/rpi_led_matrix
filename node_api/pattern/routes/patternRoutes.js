@@ -6,7 +6,7 @@ var app = express();
 app.route('/patterns')
     .get(function (req, res) {
     utils.loadPatterns().then(function (content) {
-        utils.bashExec();
+        utils.executeRPiPatternDisplay();
         res.json({
             success: {
                 response: 'display script successfully executed!',
