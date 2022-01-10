@@ -6,9 +6,8 @@ var path = require("path");
 var child_process_1 = require("child_process");
 var file = path.resolve('assets', 'patterns.txt');
 var executeRPiPatternDisplay = function () {
-    var dest = '~/led_matrix';
-    (0, child_process_1.spawn)('cp', [file, dest]);
-    (0, child_process_1.spawn)('make', ['-C', dest]).stdout.on('data', function (data) {
+    (0, child_process_1.spawn)('cp', [file, process.env.RPI_PATTERN_FILE_DEST]);
+    (0, child_process_1.spawn)('make', ['-C', process.env.RPI_PATTERN_FILE_DEST]).stdout.on('data', function (data) {
         process.stdout.write(data.toString());
     });
 };

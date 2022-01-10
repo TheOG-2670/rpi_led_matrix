@@ -6,9 +6,8 @@ const file=path.resolve('assets','patterns.txt')
 
 
 export const executeRPiPatternDisplay=(): void=>{
-    let dest='~/led_matrix'
-    spawn('cp', [file, dest])
-    spawn('make', ['-C', dest]).stdout.on('data', (data)=>{
+    spawn('cp', [file, process.env.RPI_PATTERN_FILE_DEST])
+    spawn('make', ['-C', process.env.RPI_PATTERN_FILE_DEST]).stdout.on('data', (data)=>{
         process.stdout.write(data.toString())
     })
 }
