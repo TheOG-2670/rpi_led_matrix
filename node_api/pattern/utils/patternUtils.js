@@ -6,8 +6,8 @@ var path = require("path");
 var child_process_1 = require("child_process");
 var file = path.resolve('assets', 'patterns.txt');
 var executeRPiPatternDisplay = function () {
-    (0, child_process_1.spawn)('cp', [file, process.env.RPI_PATTERN_FILE_DEST]);
-    (0, child_process_1.spawn)('make', ['-C', process.env.RPI_PATTERN_FILE_DEST]).stdout.on('data', function (data) {
+    (0, child_process_1.spawn)('cp', [file, process.env.RPI_DIR]);
+    (0, child_process_1.spawn)('make', ['-C', process.env.RPI_DIR, 'run', "ARG=".concat(process.env.PATTERN_FILE)]).stdout.on('data', function (data) {
         process.stdout.write(data.toString());
     });
 };
@@ -26,7 +26,7 @@ var constructPattern = function (patternObject) {
     //parse and construct the pattern itself 
     var pattern = [];
     arr.forEach(function (rowString) {
-        var currentRow = rowString.split(',');
+        var currentRow = rowString.split(' ');
         currentRow = Array.from(currentRow, function (num) { return parseInt(num); });
         pattern.push(currentRow);
     });
@@ -74,7 +74,7 @@ var savePatterns = function (patternObjectArray) {
         }
         writeStream.write("".concat(rows, ",").concat(columns, "\n"));
         pattern.forEach(function (row) {
-            writeStream.write("".concat(row, "\n"));
+            writeStream.write("".concat(row.join(' '), "\n"));
         });
         if (i !== patternObjectArray.length - 1)
             writeStream.write('\n');

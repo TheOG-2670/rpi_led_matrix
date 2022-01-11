@@ -6,8 +6,8 @@ const file=path.resolve('assets','patterns.txt')
 
 
 export const executeRPiPatternDisplay=(): void=>{
-    spawn('cp', [file, process.env.RPI_PATTERN_FILE_DEST])
-    spawn('make', ['-C', process.env.RPI_PATTERN_FILE_DEST]).stdout.on('data', (data)=>{
+    spawn('cp', [file, process.env.RPI_DIR])
+    spawn('make', ['-C', process.env.RPI_DIR, 'run', `ARG=${process.env.PATTERN_FILE}`]).stdout.on('data', (data)=>{
         process.stdout.write(data.toString())
     })
 }
@@ -28,7 +28,7 @@ const constructPattern=(patternObject: string): PatternObjectModel=>{
     //parse and construct the pattern itself 
     let pattern: number[][]=[]
     arr.forEach((rowString)=>{
-        let currentRow: string[] | number[] =rowString.split(',')
+        let currentRow: string[] | number[]=rowString.split(' ')
         currentRow=Array.from(currentRow, num=>parseInt(num))
         pattern.push(currentRow)
     })
@@ -83,7 +83,7 @@ export const savePatterns=(patternObjectArray: PatternObjectModel[]): void=>{
         }
         writeStream.write(`${rows},${columns}\n`)
         pattern.forEach((row: string[] | number[])=>{
-            writeStream.write(`${row}\n`)
+            writeStream.write(`${row.join(' ')}\n`)
         })
         if(i!==patternObjectArray.length-1)
             writeStream.write('\n')
