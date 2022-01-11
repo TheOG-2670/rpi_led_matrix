@@ -1,5 +1,6 @@
 #define _CRT_SECURE_NO_WARNINGS
 
+#include <iostream>
 #include <wiringPi.h>
 #include <wiringShift.h>
 #include "MatrixPattern.h"
@@ -10,10 +11,8 @@ int main(int argc, char** argv)
 	wiringPiSetup();
 	init();
 
-	if (argc < 2) {
-
-		const char *path = "/home/pi/led_matrix/shift_reg/pattern.txt";
-		threeDimVec v = Utils::readPatternFromFile(path); //file holds multiple patterns
+	if (argc == 2) {
+		threeDimVec v = Utils::readPatternFromFile(argv[1]); //file holds multiple patterns
 
 		std::stack<MatrixPattern> patternStack;
 		for (auto& i : v) {
@@ -27,9 +26,11 @@ int main(int argc, char** argv)
 		}
 
 	}
+	else if(argc == 3){
+		Utils::writeOut(std::stoi(argv[1]), std::stoi(argv[2]));
+	}
 	else {
-		Utils::writeOut(std::stoi(argv[1]), std::stoi(argv[2])); //turn on single LED from command line argument (if any)
-		delay(1000);
+		std::cout << "usage: ./shift_reg_blink </path/to/pattern/file>|<rowNum><colNum>\n";
 	}
 
 	Utils::writeOut(0, 0); //turn all LEDs off before program ends
