@@ -11,7 +11,7 @@ int main(int argc, char** argv)
 	wiringPiSetup();
 	init();
 
-	if (argc > 1 && argc < 2) {
+	if (argc == 2) {
 		threeDimVec v = Utils::readPatternFromFile(argv[1]); //file holds multiple patterns
 
 		std::stack<MatrixPattern> patternStack;
