@@ -23,17 +23,13 @@ const App = () => {
   const [matrixPattern, setMatrixPattern] = useState([]);
   const [matrixSize, setMatrixSize] = useState(null);
 
+  //updates the value of the selected matrix cell
   const handlePress = id => {
-    let updatedMatrix = [...selectedMatrixCells];
-    if (selectedMatrixCells.find(i => i.id === id) !== undefined) {
-      updatedMatrix.splice(
-        selectedMatrixCells.indexOf(selectedMatrixCells.find(i => i.id === id)),
-        1,
-      );
-    } else {
-      updatedMatrix.push(initialMatrix.find(i => i.id === id));
-    }
-    setSelectedMatrixCells(updatedMatrix);
+    let updatedMatrix = [...matrixPattern];
+    updatedMatrix[id].val === 0
+      ? (updatedMatrix[id].val = 1)
+      : (updatedMatrix[id].val = 0);
+    setMatrixPattern(updatedMatrix);
   };
 
   //renders each matrix cell in the grid displayed
