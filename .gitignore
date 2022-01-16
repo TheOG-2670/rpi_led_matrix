@@ -383,3 +383,6 @@ client/android/app/build/intermediates/incremental/mergeDebugJniLibFolders/merge
 client/android/app/build/intermediates/incremental/mergeDebugResources/compile-file-map.properties
 client/android/app/build/intermediates/incremental/mergeDebugResources/merger.xml
 client/android/app/build/intermediates/incremental/mergeDebugShaders/merger.xml
+client/.env
+client/.babelrc
+client/yarn.lock
