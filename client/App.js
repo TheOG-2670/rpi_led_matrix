@@ -9,14 +9,33 @@
 import React, {useState} from 'react';
 import {FlatList, View, StyleSheet, TouchableOpacity} from 'react-native';
 
-const initializeMatrix = () => {
-  let matrix = [];
-  for (let i = 0; i < 25; i++) {
-    matrix.push({
-      id: i,
-    });
-  }
-  return matrix;
+//sends the pattern to the Node API to be saved on the Pi
+const sendToPi = (matrix, cb) => {
+  let matrixArray = [];
+  matrixArray.push({
+    rows: matrix.length,
+    columns: matrix[0].length,
+    pattern: matrix,
+  });
+  fetch(`${IP_ADDR}:${PORT}/patterns`, {
+    method: 'POST',
+    headers: {
+      Accept: 'application/json',
+      'Content-Type': 'application/json',
+    },
+    body: JSON.stringify(matrixArray),
+  })
+    .then(response => response.json())
+    .then(responseJson => cb(responseJson.success.response))
+    .catch(error => console.error(error.toString()));
+};
+
+//displays the pattern on the Pi
+const getFromPi = () => {
+  fetch(`${IP_ADDR}:${PORT}/patterns`)
+    .then(res => res.json())
+    .then(resJson => console.log(resJson))
+    .catch(e => console.log(e.toString()));
 };
 
 const App = () => {
