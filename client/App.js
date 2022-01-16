@@ -20,9 +20,8 @@ const initializeMatrix = () => {
 };
 
 const App = () => {
-  const [selectedMatrixCells, setSelectedMatrixCells] = useState([]);
-
-  let initialMatrix = initializeMatrix();
+  const [matrixPattern, setMatrixPattern] = useState([]);
+  const [matrixSize, setMatrixSize] = useState(null);
 
   const handlePress = id => {
     let updatedMatrix = [...selectedMatrixCells];
