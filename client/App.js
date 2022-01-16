@@ -55,6 +55,12 @@ const App = () => {
     );
   };
 
+  //initial matrix construction
+  useEffect(() => {
+    setMatrixSize(25);
+    setMatrixPattern(Utils.initializeMatrix(matrixSize));
+  }, [matrixSize]);
+
   return (
     <>
       <View style={styles.gridContainer}>
