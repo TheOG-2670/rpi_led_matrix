@@ -56,15 +56,34 @@ const App = () => {
   };
 
   return (
-    <View style={styles.gridContainer}>
-      <FlatList
-        data={initialMatrix}
-        renderItem={render}
-        numColumns={5}
-        extraData={selectedMatrixCells}
-        keyExtractor={item => item.id}
-      />
-    </View>
+    <>
+      <View style={styles.gridContainer}>
+        <FlatList
+          data={matrixPattern}
+          renderItem={renderMatrixCell}
+          numColumns={5}
+          keyExtractor={item => item.id}
+        />
+
+        <View style={styles.buttonMatrixGrid}>
+          <StyledButton
+            title={'save'}
+            color={'green'}
+            onPress={() => {
+              sendToPi(Utils.translateToBinary(matrixPattern), response => {
+                ToastAndroid.show(response, 1);
+              });
+            }}
+          />
+          <StyledButton title={'display'} onPress={() => getFromPi()} />
+          <StyledButton
+            title={'clear'}
+            color={'red'}
+            onPress={() => setMatrixPattern(Utils.clearPattern(matrixSize))}
+          />
+        </View>
+      </View>
+    </>
   );
 };
 
