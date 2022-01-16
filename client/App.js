@@ -6,8 +6,17 @@
  * @flow strict-local
  */
 
-import React, {useState} from 'react';
-import {FlatList, View, StyleSheet, TouchableOpacity} from 'react-native';
+import React, {useEffect, useState} from 'react';
+import {
+  FlatList,
+  View,
+  StyleSheet,
+  TouchableOpacity,
+  ToastAndroid,
+} from 'react-native';
+import {IP_ADDR, PORT} from '@env';
+import * as Utils from './utils';
+import StyledButton from './StyledButton';
 
 //sends the pattern to the Node API to be saved on the Pi
 const sendToPi = (matrix, cb) => {
