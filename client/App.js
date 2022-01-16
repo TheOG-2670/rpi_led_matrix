@@ -36,14 +36,13 @@ const App = () => {
     setSelectedMatrixCells(updatedMatrix);
   };
 
-  const render = ({item}) => {
+  //renders each matrix cell in the grid displayed
+  const renderMatrixCell = ({item}) => {
     const itemStyle = {
       width: 50,
       height: 50,
       margin: 7,
-      backgroundColor: selectedMatrixCells.find(i => i.id === item.id)
-        ? 'green'
-        : 'grey',
+      backgroundColor: item.val === 1 ? 'green' : 'grey',
     };
 
     return (
