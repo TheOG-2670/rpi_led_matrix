@@ -72,8 +72,11 @@ const styles = StyleSheet.create({
   gridContainer: {
     alignItems: 'center',
     justifyContent: 'center',
-    marginVertical: 150,
+    paddingVertical: 50,
     height: '100%',
+  },
+  buttonMatrixGrid: {
+    marginBottom: -30,
   },
 });
 
