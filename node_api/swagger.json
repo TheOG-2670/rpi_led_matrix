@@ -1,0 +1,106 @@
+{
+    "openapi": "3.0.3",
+    "info": {
+        "title": "Raspberry Pi LED Matrix API",
+        "description": "An API used to communicate with the Raspberry PI to display patterns on the 8x8 LED matrix",
+        "termsOfService": "",
+        "contact": {
+            "name": "",
+            "url": "",
+            "email": ""
+        },
+        "license": {
+            "name": "",
+            "url": ""
+        },
+        "version": "1.0.0"
+    },
+    "tags": [
+        {
+            "name": "pattern",
+            "description": "a matrix pattern"
+        }
+    ],
+    "paths": {
+        "/patterns": {
+            "get": {
+                "tags": [
+                    "pattern"
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK"
+                    },
+                    "404": {
+                        "description": "Not Found"
+                    }
+                }
+            },
+            "post": {
+                "tags": [
+                    "pattern"
+                ],
+                "requestBody": {
+                    "description": "list of patterns to add",
+                    "required": "true",
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/MatrixPatternArray"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "201": {
+                        "description": "Created"
+                    },
+                    "400": {
+                        "description": "Bad Request"
+                    },
+                    "401": {
+                        "description": "Invalid Data"
+                    }
+                }
+            }
+        }
+    },
+    "components": {
+        "schemas": {
+            "MatrixPattern": {
+                "type": "object",
+                "required": [
+                    "numRows",
+                    "numCols",
+                    "pattern"
+                ],
+                "properties": {
+                    "rows": {
+                        "type": "integer",
+                        "format": "int32"
+                    },
+                    "columns": {
+                        "type": "integer",
+                        "format": "int32"
+                    },
+                    "pattern": {
+                        "type": "array",
+                        "items": {
+                            "type": "array",
+                            "items": {
+                                "type": "integer",
+                                "format": "int32"
+                            }
+                        }
+                    }
+                }
+            },
+            "MatrixPatternArray": {
+                "type": "array",
+                "items": {
+                    "$ref": "#/components/schemas/MatrixPattern"
+                }
+            }
+        }
+    }
+}

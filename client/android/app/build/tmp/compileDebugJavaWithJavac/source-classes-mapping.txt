@@ -1,0 +1,14 @@
+com/rpi_matrix/BuildConfig.java
+ com.rpi_matrix.BuildConfig
+com/rpi_matrix/ReactNativeFlipper.java
+ com.rpi_matrix.ReactNativeFlipper
+ com.rpi_matrix.ReactNativeFlipper$1
+ com.rpi_matrix.ReactNativeFlipper$2
+ com.rpi_matrix.ReactNativeFlipper$2$1
+com/rpi_matrix/MainApplication.java
+ com.rpi_matrix.MainApplication
+ com.rpi_matrix.MainApplication$1
+com/facebook/react/PackageList.java
+ com.facebook.react.PackageList
+com/rpi_matrix/MainActivity.java
+ com.rpi_matrix.MainActivity
