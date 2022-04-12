@@ -1,0 +1,7 @@
+*.ts text diff=js
+*.js text diff=js
+
+*.cpp text diff=cpp
+*.h text diff=cpp
+
+Makefile text
