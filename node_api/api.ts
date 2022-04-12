@@ -14,6 +14,6 @@ if (process.env.NODE_ENV === 'Development') {
 }
 
 app.use(express.json())
-app.use(patternRouter)
+    .use(patternRouter)
 
-app.listen(8080, () => console.log(`main api listening on 8080`))
+app.listen(HTTP_PORT, () => console.log(`main api listening on ${HTTP_PORT}`))
