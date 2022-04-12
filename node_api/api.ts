@@ -1,7 +1,9 @@
-import * as express from 'express'
-import patternRouter from './pattern/routes/patternRoutes'
-const swaggerDoc =require('./swagger.json')
+import express from 'express'
+import patternRouter from './pattern/patternRoutes'
+
 const app = express()
+const SWAGGER_PORT=5000
+const HTTP_PORT=8080
 
 //enable swagger for development
 if (process.env.NODE_ENV === 'Development') {
