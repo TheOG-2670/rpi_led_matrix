@@ -30,9 +30,7 @@ int main(int argc, char** argv)
 		Utils::writeOut(std::stoi(argv[1]), std::stoi(argv[2]));
 	}
 	else {
-		std::cout << "usage: ./shift_reg_blink </path/to/pattern/file>|<rowNum><colNum>\n";
+		std::cout << "usage: ./shift_reg_blink <pattern file> OR <row> <col> \n";
 	}
-
-	Utils::writeOut(0, 0); //turn all LEDs off before program ends
 	return 0;
 }
