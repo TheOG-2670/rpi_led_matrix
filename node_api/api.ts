@@ -1,6 +1,8 @@
 import express from 'express'
 import patternRouter from './pattern/patternRoutes'
+import * as dotenv from 'dotenv'
 
+dotenv.config()
 const app = express()
 const SWAGGER_PORT=5000
 const HTTP_PORT=8080
