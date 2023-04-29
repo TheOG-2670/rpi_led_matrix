@@ -2,10 +2,12 @@ import { PatternObjectModel } from "./patternModels"
 import * as fs from 'fs'
 import * as path from 'path'
 import {spawn} from 'child_process'
-const file=path.resolve('assets','patterns.txt')
 import * as dotenv from 'dotenv'
 
 dotenv.config({"path": "../.env"})
+
+const file=path.resolve('assets', 'patterns.txt')
+const shellScript=path.resolve('pattern','./execRpiPattern.sh')
 /*
     Pattern file copied from 'assets' folder to directory on raspberry pi. 
     'make' command compiles and execute the program, displaying patterns on the LED matrix,
@@ -13,11 +15,10 @@ dotenv.config({"path": "../.env"})
 */
 export const executeRPiPatternDisplay=(): void=>{
     //@ts-ignore
-    spawn('cp', [file, process.env.RPI_DIR])
-    //@ts-ignore
-    spawn('make', ['-C', process.env.RPI_DIR, 'run', `ARG=${process.env.PATTERN_FILE}`]).stdout.on('data', (data: Uint16Array)=>{
+    spawn(`${shellScript}`).stdout.on('data', (data: Uint16Array)=>{
         process.stdout.write(data.toString())
     })
+    .on('error', (err)=>process.stderr.write(err.message))
 }
 
 const constructPattern=(patternObject: string): PatternObjectModel=>{
