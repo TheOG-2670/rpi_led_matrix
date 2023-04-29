@@ -369,3 +369,4 @@ patterns.txt
 node_api/.env
 node_api/package-lock.json
 node_api/build
+rpi_matrix/matrix_patterns
