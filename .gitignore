@@ -363,14 +363,14 @@ MigrationBackup/
 FodyWeavers.xsd
 /WebAPI1/pattern.txt
 shift_reg_blink
-Makefile
 patterns.txt
-Makefile
 .gitattributes
 .gitignore
 node_api/.env
 node_api/package-lock.json
 node_api/build
+rpi_matrix/matrix_patterns
+matrix_patterns
 client/android/.gradle/6.9/executionHistory/executionHistory.bin
 client/android/.gradle/6.9/executionHistory/executionHistory.lock
 client/android/.gradle/6.9/fileHashes/fileHashes.bin
