@@ -24,11 +24,11 @@ int main(int argc, char** argv)
 		}
 
 	}
-	else if(argc == 3){
-		Utils::writeOut(std::stoi(argv[1]), std::stoi(argv[2]));
-	}
 	else {
-		std::cout << "usage: ./shift_reg_blink <pattern file> OR <row> <col> \n";
+		Utils::writeOut(std::stoi(argv[1]), std::stoi(argv[2])); //turn on single LED from command line argument (if any)
+		delay(1000);
 	}
+
+	Utils::writeOut(0, 0); //turn all LEDs off before program ends
 	return 0;
 }
