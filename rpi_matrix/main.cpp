@@ -1,9 +1,8 @@
 #define _CRT_SECURE_NO_WARNINGS
 
-#include <iostream>
 #include <wiringPi.h>
 #include <wiringShift.h>
-#include "MatrixPattern.h"
+#include "MatrixPattern.h" //stack
 #include "Utils.h" //readPatternFromFile, binToHex, displayPattern
 
 int main(int argc, char** argv)
@@ -13,15 +12,14 @@ int main(int argc, char** argv)
 
 	if (argc == 2) {
 		threeDimVec v = Utils::readPatternFromFile(argv[1]); //file holds multiple patterns
-
-		std::stack<MatrixPattern> patternStack;
+		std::queue<MatrixPattern> patternStack;
 		for (auto& i : v) {
 			MatrixPattern mp(i.size(), i[0].size(), i); //rows, cols, pattern
 			patternStack.push(mp);
 		}
 
 		while (!patternStack.empty()) {
-			patternStack.top().displayPattern(3, 300);
+			patternStack.front().displayPattern(3, 5); //params: delay (ms) -> delay between patterns; patternTime (ms) -> duration of a pattern
 			patternStack.pop();
 		}
 

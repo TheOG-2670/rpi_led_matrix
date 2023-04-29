@@ -3,6 +3,7 @@
 
 #include <vector>
 #include <stack>
+#include <queue>
 #include "Utils.h"
 
 class MatrixPattern 
