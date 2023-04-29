@@ -9,3 +9,5 @@ export interface PatternsResponse {
     response: string,
     data?: PatternObjectModel[] | null
 }
+
+export type ResponseEntity=PatternsResponse[]
